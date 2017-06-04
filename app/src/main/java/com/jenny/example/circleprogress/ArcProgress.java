@@ -85,6 +85,7 @@ public class ArcProgress extends View {
         attributes.recycle();
 
         initPainters();
+        setGrade(0,0);
     }
 
     protected void initByAttributes(TypedArray attributes) {
@@ -159,7 +160,7 @@ public class ArcProgress extends View {
         finishedEndAngle = finishedStartAngle + finishedSweepAngle;
 
         ValueAnimator anim = ValueAnimator.ofFloat((int)oldFinishedSweepAngle, (int)finishedSweepAngle);
-        anim.setDuration(5000);
+        anim.setDuration(1000);
         anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -267,16 +268,8 @@ public class ArcProgress extends View {
 
         float pointX;
         float pointY;
-        if(drawingSweepAngle<-90){
-            pointX = radius - (float) Math.cos(drawingSweepAngle/ 180 * Math.PI)*(radius-pointRadius/2);
-            pointY = radius + (float) Math.sin(drawingSweepAngle/ 180 * Math.PI)*(radius-pointRadius/2);
-        }else if(drawingSweepAngle>0){
-            pointX = radius + (float) Math.cos(drawingSweepAngle/ 180 * Math.PI)*(radius-pointRadius/2);
-            pointY = radius + (float) Math.sin(drawingSweepAngle/ 180 * Math.PI)*(radius-pointRadius/2);
-        }else {
-            pointX = radius + (float) Math.cos(drawingSweepAngle/ 180 * Math.PI)*(radius-pointRadius/2);
-            pointY = radius + (float) Math.sin(finishedEndAngle/ 180 * Math.PI)*(radius-pointRadius/2);
-        }
+        pointX = radius + (float) Math.cos(drawwingEndAngle / 180 * Math.PI) * (radius - pointRadius / 2);
+        pointY = radius + (float) Math.sin(drawwingEndAngle / 180 * Math.PI) * (radius - pointRadius / 2);
 
         canvas.drawCircle(pointX,pointY,pointRadius,pointPaint);
     }
