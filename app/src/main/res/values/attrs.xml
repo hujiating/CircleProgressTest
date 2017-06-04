@@ -20,4 +20,24 @@
         <attr name="arc_is_left" format="boolean"/>
 
     </declare-styleable>
+
+    <declare-styleable name="CountDownProgress">
+        <attr name="progress" format="integer"/>
+        <attr name="stroke_width" format="dimension"/>
+        <attr name="max" format="integer"/>
+        <attr name="bottom_height" format="dimension"/>
+
+        <attr name="unfinished_color" format="color"/>
+        <attr name="finished_color" format="color"/>
+
+        <attr name="text_size" format="dimension"/>
+        <attr name="text_color" format="color"/>
+
+        <attr name="suffix_text" format="string"/>
+        <attr name="suffix_text_size" format="dimension"/>
+        <attr name="suffix_text_padding" format="dimension"/>
+
+        <attr name="bottom_text" format="string"/>
+        <attr name="bottom_text_size" format="dimension"/>
+    </declare-styleable>
 </resources>

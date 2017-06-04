@@ -16,7 +16,6 @@ import android.view.View;
 /**
  * Created by hujiating on 2017/6/1.
  */
-
 public class ArcProgress extends View {
     private boolean isLeft;
     private Paint paint;

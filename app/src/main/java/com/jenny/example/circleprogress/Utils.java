@@ -3,7 +3,7 @@ package com.jenny.example.circleprogress;
 import android.content.res.Resources;
 
 /**
- * Created by bruce on 14-11-6.
+ * Created by hujiating on 2017/6/1.
  */
 public final class Utils {
     
@@ -18,5 +18,13 @@ public final class Utils {
     public static float sp2px(Resources resources, float sp){
         final float scale = resources.getDisplayMetrics().scaledDensity;
         return sp * scale;
+    }
+
+    public static int strToTime(String strTime){
+        String[] strings = strTime.split(":");
+        int minute = Integer.parseInt(strings[0]);
+        int second = Integer.parseInt(strings[1]);
+        int time = minute*60+second;
+        return time;
     }
 }

@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 
+/**
+ * Created by hujiating on 2017/6/1.
+ */
 public class MainActivity extends Activity {
 
     private ArcProgress arcProgress;
