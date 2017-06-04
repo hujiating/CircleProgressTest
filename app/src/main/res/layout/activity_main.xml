@@ -13,7 +13,8 @@
         app:arc_max_grade="6"
         app:arc_show_width="43.5dp"
         app:arc_show_height="37dp"
-        app:arc_stroke_width="1dp"/>
+        app:arc_stroke_width="1dp"
+        app:arc_is_left="true"/>
 
     <Button
         android:layout_width="wrap_content"

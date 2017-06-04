@@ -18,6 +18,7 @@ import android.view.View;
  */
 
 public class ArcProgress extends View {
+    private boolean isLeft;
     private Paint paint;
     private Paint pointPaint;
 
@@ -41,7 +42,6 @@ public class ArcProgress extends View {
 
     private float arcShowWidth;
     private float arcShowHeight;
-    private float arcBottomHeight;
 
     private final int default_finished_color = Color.RED;
     private final int default_unfinished_color = Color.GRAY;
@@ -78,14 +78,13 @@ public class ArcProgress extends View {
         min_size = (int) Utils.dp2px(getResources(), 100);
 
         default_stroke_width = Utils.dp2px(getResources(), 1);
-        default_point_radius = Utils.dp2px(getResources(), 2.5f);
+        default_point_radius = Utils.dp2px(getResources(), 1.25f);
 
         TypedArray attributes = context.getTheme().obtainStyledAttributes(attrs, R.styleable.ArcProgress, defStyleAttr, 0);
         initByAttributes(attributes);
         attributes.recycle();
 
         initPainters();
-        setGrade(0,0);
     }
 
     protected void initByAttributes(TypedArray attributes) {
@@ -103,6 +102,7 @@ public class ArcProgress extends View {
         setGrade(attributes.getInt(R.styleable.ArcProgress_arc_grade, 0));
         strokeWidth = attributes.getDimension(R.styleable.ArcProgress_arc_stroke_width, default_stroke_width);
         pointRadius = attributes.getDimension(R.styleable.ArcProgress_point_radius, default_point_radius);
+        isLeft = attributes.getBoolean(R.styleable.ArcProgress_arc_is_left,false);
     }
 
     protected void initPainters() {
@@ -235,41 +235,37 @@ public class ArcProgress extends View {
         setMeasuredDimension(widthMeasureSpec, heightMeasureSpec);
         int width = MeasureSpec.getSize(widthMeasureSpec);
         int height =  MeasureSpec.getSize(heightMeasureSpec);
-        rectF.set(pointRadius / 2f, pointRadius / 2f, width - pointRadius / 2f, height - pointRadius / 2f);
+        rectF.set(pointRadius, pointRadius, width - pointRadius, height - pointRadius);
         radius = width / 2f;
         calculateAngles();
-        float angle = (360 - arcStartAngle) / 2f;
-        arcBottomHeight = radius * (float) (1 - Math.cos(angle / 180 * Math.PI));
+        setGrade(0,0);
     }
 
     private void calculateAngles(){
-        arcStartAngle = -(float)(Math.asin((arcShowWidth-radius)/radius)*180/Math.PI)-90;
-        arcEndAngle = (float)(Math.asin((arcShowHeight-radius)/radius)*180/Math.PI);
-        arcSweepAngle = arcEndAngle-arcStartAngle;
+        if(isLeft){
+            arcStartAngle = -(float)(Math.asin((arcShowWidth-radius)/radius)*180/Math.PI)-90;
+            arcEndAngle = (float)(Math.asin((arcShowHeight-radius)/radius)*180/Math.PI);
+            arcSweepAngle = arcEndAngle-arcStartAngle;
+        }else {
+            arcStartAngle = (float)(Math.asin((arcShowWidth-radius)/radius)*180/Math.PI)-90;
+            arcEndAngle = -(float)(Math.asin((arcShowHeight-radius)/radius)*180/Math.PI)-180;
+            arcSweepAngle = arcEndAngle-arcStartAngle;
+        }
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        if(grade == 0)
-            finishedStartAngle = 0.01f;
         paint.setColor(unfinishedStrokeColor);
         canvas.drawArc(rectF, arcStartAngle,arcSweepAngle , false, paint);
         paint.setColor(finishedStrokeColor);
         canvas.drawArc(rectF, finishedStartAngle, drawingSweepAngle, false, paint);
 
-
-        if(arcBottomHeight == 0) {
-            float radius = getWidth() / 2f;
-            float angle = (360 - arcStartAngle) / 2f;
-            arcBottomHeight = radius * (float) (1 - Math.cos(angle / 180 * Math.PI));
-        }
-
         float pointX;
         float pointY;
-        pointX = radius + (float) Math.cos(drawwingEndAngle / 180 * Math.PI) * (radius - pointRadius / 2);
-        pointY = radius + (float) Math.sin(drawwingEndAngle / 180 * Math.PI) * (radius - pointRadius / 2);
+        pointX = radius + (float) Math.cos(drawwingEndAngle / 180 * Math.PI) * (radius - pointRadius);
+        pointY = radius + (float) Math.sin(drawwingEndAngle / 180 * Math.PI) * (radius - pointRadius);
 
         canvas.drawCircle(pointX,pointY,pointRadius,pointPaint);
     }
