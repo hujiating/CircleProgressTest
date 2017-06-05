@@ -55,7 +55,7 @@ public class CountDownProgress extends View {
     private final int min_size;
 
     //圆环颜色
-    private int[] doughnutColors = new int[]{Color.BLUE,Color.RED, Color.BLUE,Color.BLUE};
+    private int[] doughnutColors = new int[]{Color.BLUE,Color.RED, Color.BLUE};
 
     private static final String INSTANCE_STATE = "saved_instance";
     private static final String INSTANCE_STROKE_WIDTH = "stroke_width";
@@ -293,7 +293,7 @@ public class CountDownProgress extends View {
             finishedStartAngle = 0.01f;
 //        paint.setColor(unfinishedStrokeColor);
         if (doughnutColors.length > 1) {
-            paint.setShader(new SweepGradient(getWidth() / 2, getHeight() / 2, doughnutColors, new float[]{0f,0.2f,1f,0.2f}));
+            paint.setShader(new SweepGradient(getWidth() / 2, getHeight() / 2, doughnutColors, new float[]{0f,0.2f,1f}));
         } else {
             paint.setColor(doughnutColors[0]);
         }
