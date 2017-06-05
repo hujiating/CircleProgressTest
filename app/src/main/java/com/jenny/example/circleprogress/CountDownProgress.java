@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.graphics.SweepGradient;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.TextPaint;
@@ -18,6 +19,7 @@ import android.view.View;
  */
 public class CountDownProgress extends View {
     private Paint paint;
+    private Paint paint2;
     protected Paint textPaint;
 
     private RectF rectF = new RectF();
@@ -28,8 +30,7 @@ public class CountDownProgress extends View {
     private String bottomText;
     private float textSize;
     private int textColor;
-    private String strTime;
-    private int timeCountDown;
+
     private int progress = 0;
     private int max;
     private int finishedStrokeColor;
@@ -49,9 +50,12 @@ public class CountDownProgress extends View {
     private final float default_stroke_width;
     private final String default_suffix_text;
     private final int default_max = 20*60;
-    private final float default_arc_angle = 360 * 0.8f;
+    private final float default_bottom_height = 0;
     private float default_text_size;
     private final int min_size;
+
+    //圆环颜色
+    private int[] doughnutColors = new int[]{Color.BLUE,Color.RED, Color.BLUE,Color.BLUE};
 
     private static final String INSTANCE_STATE = "saved_instance";
     private static final String INSTANCE_STROKE_WIDTH = "stroke_width";
@@ -100,7 +104,7 @@ public class CountDownProgress extends View {
         unfinishedStrokeColor = attributes.getColor(R.styleable.CountDownProgress_unfinished_color, default_unfinished_color);
         textColor = attributes.getColor(R.styleable.CountDownProgress_text_color, default_text_color);
         textSize = attributes.getDimension(R.styleable.CountDownProgress_text_size, default_text_size);
-        arcBottomHeight = attributes.getDimension(R.styleable.CountDownProgress_bottom_height, default_arc_angle);
+        arcBottomHeight = attributes.getDimension(R.styleable.CountDownProgress_bottom_height, default_bottom_height);
         setMax(attributes.getInt(R.styleable.CountDownProgress_max, default_max));
         setProgress(attributes.getInt(R.styleable.CountDownProgress_progress, 0));
         strokeWidth = attributes.getDimension(R.styleable.CountDownProgress_stroke_width, default_stroke_width);
@@ -122,6 +126,12 @@ public class CountDownProgress extends View {
         paint.setAntiAlias(true);
         paint.setStrokeWidth(strokeWidth);
         paint.setStyle(Paint.Style.STROKE);
+
+        paint2 = new Paint();
+        paint2.setColor(default_unfinished_color);
+        paint2.setAntiAlias(true);
+        paint2.setStrokeWidth(strokeWidth);
+        paint2.setStyle(Paint.Style.STROKE);
     }
 
     @Override
@@ -281,12 +291,17 @@ public class CountDownProgress extends View {
         float finishedStartAngle = startAngle;
         if(progress == 0)
             finishedStartAngle = 0.01f;
-        paint.setColor(unfinishedStrokeColor);
+//        paint.setColor(unfinishedStrokeColor);
+        if (doughnutColors.length > 1) {
+            paint.setShader(new SweepGradient(getWidth() / 2, getHeight() / 2, doughnutColors, new float[]{0f,0.2f,1f,0.2f}));
+        } else {
+            paint.setColor(doughnutColors[0]);
+        }
         canvas.drawArc(rectF, startAngle, arcAngle, false, paint);
-        paint.setColor(finishedStrokeColor);
-        canvas.drawArc(rectF, finishedStartAngle, finishedSweepAngle, false, paint);
+        paint2.setColor(finishedStrokeColor);
+        canvas.drawArc(rectF, finishedStartAngle, finishedSweepAngle, false, paint2);
 
-        String text = String.valueOf(getProgress());
+      /*  String text = String.valueOf(getProgress());
         if (!TextUtils.isEmpty(text)) {
             textPaint.setColor(textColor);
             textPaint.setTextSize(textSize);
@@ -296,7 +311,7 @@ public class CountDownProgress extends View {
             textPaint.setTextSize(suffixTextSize);
             float suffixHeight = textPaint.descent() + textPaint.ascent();
             canvas.drawText(suffixText, getWidth() / 2.0f  + textPaint.measureText(text) + suffixTextPadding, textBaseline + textHeight - suffixHeight, textPaint);
-        }
+        }*/
 
        /* if(arcBottomHeight == 0) {
             float radius = getWidth() / 2f;
@@ -304,11 +319,11 @@ public class CountDownProgress extends View {
             arcBottomHeight = radius * (float) (1 - Math.cos(angle / 180 * Math.PI));
         }*/
 
-        if (!TextUtils.isEmpty(getBottomText())) {
+      /*  if (!TextUtils.isEmpty(getBottomText())) {
             textPaint.setTextSize(bottomTextSize);
             float bottomTextBaseline = getHeight() - arcBottomHeight - (textPaint.descent() + textPaint.ascent()) / 2;
             canvas.drawText(getBottomText(), (getWidth() - textPaint.measureText(getBottomText())) / 2.0f, bottomTextBaseline, textPaint);
-        }
+        }*/
     }
 
     @Override
