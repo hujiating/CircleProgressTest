@@ -25,6 +25,7 @@ public class ArcProgress extends View {
 
     private float strokeWidth;
 
+    private int oldGrade = 0;
     private int grade = 0;
     private int maxGrade;
     private int finishedStrokeColor;
@@ -140,15 +141,15 @@ public class ArcProgress extends View {
         return grade;
     }
 
-    public void setGrade(int grade) {
+ /*   public void setGrade(int grade) {
         this.grade = grade;
         if (this.grade > getMaxGrade()) {
             this.grade %= getMaxGrade();
         }
         invalidate();
-    }
+    }*/
 
-    public void setGrade(int oldGrade,int grade) {
+    public void setGrade(int grade) {
         this.grade = grade;
         if (this.grade > getMaxGrade()) {
             this.grade %= getMaxGrade();
@@ -170,6 +171,7 @@ public class ArcProgress extends View {
             }
         });
         anim.start();
+        this.oldGrade = grade;
     }
 
     public int getMaxGrade() {
@@ -237,7 +239,7 @@ public class ArcProgress extends View {
         rectF.set(pointRadius, pointRadius, width - pointRadius, height - pointRadius);
         radius = width / 2f;
         calculateAngles();
-        setGrade(0,0);
+        setGrade(0);
     }
 
     private void calculateAngles(){

@@ -21,7 +21,7 @@ public class MainActivity extends Activity {
 
     public void click(View view){
         if(i<6){
-            arcProgress.setGrade(i,++i);
+            arcProgress.setGrade(++i);
         }else
             i=0;
     }
