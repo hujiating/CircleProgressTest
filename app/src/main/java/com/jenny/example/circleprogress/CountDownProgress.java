@@ -293,7 +293,7 @@ public class CountDownProgress extends View {
             finishedStartAngle = 0.01f;
 //        paint.setColor(unfinishedStrokeColor);
         if (doughnutColors.length > 1) {
-            paint.setShader(new SweepGradient(getWidth() / 2, getHeight() / 2, doughnutColors, new float[]{0f,0.2f,1f}));
+            paint.setShader(new SweepGradient(getWidth() / 2, getHeight() / 2, doughnutColors, new float[]{0f,0.5f,1f}));
         } else {
             paint.setColor(doughnutColors[0]);
         }
